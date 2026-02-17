@@ -135,7 +135,10 @@ class Parser:
                     if depth > 0:
                         loop_inst.append(self.token_list[j])
                     j += 1
-
+                
+                if depth != 0:
+                    raise Exception("Unterminated loop")
+                
                 while stack and stack[-1] != 0:
                     Parser(loop_inst).parse()
                 i = j
@@ -184,3 +187,4 @@ with open(sys.argv[1]) as code:
         parser = Parser(token_list)
 
         parser.parse()
+
