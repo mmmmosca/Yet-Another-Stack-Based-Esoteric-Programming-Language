@@ -136,7 +136,7 @@ class Parser:
                         loop_inst.append(self.token_list[j])
                     j += 1
 
-                while stack[-1] != 0:
+                while stack and stack[-1] != 0:
                     Parser(loop_inst).parse()
                 i = j
 
@@ -182,4 +182,5 @@ with open(sys.argv[1]) as code:
         lexer = Lexer(line)
         token_list = lexer.tokenize()
         parser = Parser(token_list)
+
         parser.parse()
