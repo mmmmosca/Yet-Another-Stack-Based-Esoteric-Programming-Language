@@ -115,7 +115,9 @@ class Parser:
                 print(stack.pop(),end='')
                 i+=1
             elif self.token_list[i] == TOKENS[6]:
-                stack.append(ord(sys.stdin.read(1)))
+                user_input = input()
+                if user_input:
+                    stack.append(ord(user_input[0]))
                 i+=1
             elif self.token_list[i] == TOKENS[7]:
                 stack.reverse()
