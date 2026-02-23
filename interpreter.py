@@ -181,11 +181,9 @@ class Parser:
 
 with open(sys.argv[1]) as code:
     code = code.readlines()
+    tokens = []
     for line in code:
         lexer = Lexer(line)
-        token_list = lexer.tokenize()
-        parser = Parser(token_list)
-
-        parser.parse()
-
-
+        tokens += lexer.tokenize()
+    parser = Parser(tokens)
+    parser.parse()
