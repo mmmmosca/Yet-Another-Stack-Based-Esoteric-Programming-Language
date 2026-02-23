@@ -269,10 +269,11 @@ void main(string[] args) {
     }
 
     string code = readText(args[1]);
+    Token[] tokenList;
     foreach (line; code.splitLines()) {
-        auto lexer = new Lexer(line);
-        auto tokenList = lexer.tokenize();
-        auto parser = new Parser(tokenList);
-        parser.parse();
+        Lexer lexer = new Lexer(line);
+        tokenList ~= lexer.tokenize();
     }
+    Parser parser = new Parser(tokenList);
+    parser.parse();
 }
