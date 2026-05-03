@@ -129,6 +129,24 @@ class Parser {
         this.tokenList = tokenList;
     }
 
+    private size_t instructionWidth(size_t index) {
+        if (index >= tokenList.length) {
+            return 0;
+        }
+
+        switch (tokenList[index].kind) {
+            case TokenKind.PUSH:
+                if (index + 1 >= tokenList.length || tokenList[index + 1].kind != TokenKind.NUMBER) {
+                    throw new Exception("Invalid token: PUSH requires a number");
+                }
+                return 2;
+            case TokenKind.NUMBER:
+                throw new Exception("Invalid token in parse stream");
+            default:
+                return 1;
+        }
+    }
+
     void parse() {
         size_t i = 0;
         while (i < tokenList.length) {
@@ -212,11 +230,11 @@ class Parser {
                     size_t j = i + 1;
                     int depth = 1;
                     Token[] loopInst;
-                    while (j < tokenList.length && depth > 0) {
-                        auto t = tokenList[j];
-                        if (t.kind == TokenKind.LOOP_START) {
-                            depth++;
-                        } else if (t.kind == TokenKind.LOOP_END) {
+                        while (j < tokenList.length && depth > 0) {
+                            auto t = tokenList[j];
+                            if (t.kind == TokenKind.LOOP_START) {
+                                depth++;
+                            } else if (t.kind == TokenKind.LOOP_END) {
                             depth--;
                         }
                         if (depth > 0) {
@@ -257,7 +275,7 @@ class Parser {
                             }
                             i = j;
                         } else {
-                            i += 2;
+                            i += 1 + instructionWidth(i + 1);
                         }
                     }
                     break;
